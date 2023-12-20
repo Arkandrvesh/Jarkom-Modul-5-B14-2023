@@ -86,3 +86,179 @@ Pada metode Variable Length Subnet Masking (VLSM), proses penurunan subnet dilak
 | A10    | Heiter         | 192.185.4.1   | 255.255.252.000 | 22     | 192.185.8.0   | 192.185.11.255  |
 |        | Sein           | 192.185.4.2   | 255.255.252.000 | 22     |             |              |
 |        | GrabForest     | DHCP        | 255.255.252.000 | 22     |             |              |
+
+## Topologi GNS
+
+<img width="435" alt="topoGNS-M5" src="https://github.com/Arkandrvesh/Jarkom-Modul-5-B14-2023/assets/116497822/86fbc5f8-fbc4-4e0b-a7a8-6b098ff6ad9c">
+
+## Route and Subneting
+
+### Konfigurasi
+- Revolte
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.130
+	netmask 255.255.255.252
+	gateway 192.185.14.129
+```
+
+- Richter
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.134
+	netmask 255.255.255.252
+	gateway 192.185.14.133
+```
+
+- Fern
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.3
+	netmask 255.255.255.128
+	gateway 192.185.14.1
+
+auto eth1
+iface eth1 inet static
+	address 192.185.14.133
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.185.14.129
+	netmask 255.255.255.252
+```
+
+- SchewerMountain1
+
+```bash
+auto eth0
+iface eth0 inet dahcp
+```
+
+- LaubHills
+
+```bash
+# DHCP config for eth0
+auto eth0
+iface eth0 inet dhcp
+```
+
+- Himmel
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.138
+	netmask 255.255.255.252
+	gateway 192.185.14.137
+
+auto eth1
+iface eth1 inet static
+	address 192.185.14.1
+	netmask 255.255.255.128
+
+auto eth2
+iface eth2 inet static
+	address 192.185.12.1
+	netmask 255.255.254.0
+```
+
+- Frieren
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.146
+	netmask 255.255.255.252
+	gateway 192.185.14.145
+
+auto eth1
+iface eth1 inet static
+	address 192.185.14.137
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.185.14.141
+	netmask 255.255.255.252
+```
+
+- Stark
+
+```
+auto eth0
+iface eth0 inet static
+	address 192.185.14.142
+	netmask 255.255.255.252
+	gateway 192.185.14.141
+```
+
+- Aura
+
+```bash
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 192.185.14.145
+	netmask 255.255.255.252
+
+auto eth2
+iface eth2 inet static
+	address 192.185.14.149
+	netmask 255.255.255.252
+```
+
+- Heiter
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.14.150
+	netmask 255.255.255.252
+	gateway 192.185.14.149
+
+auto eth1
+iface eth1 inet static
+	address 192.185.8.1
+	netmask 255.255.252.0
+
+auto eth2
+iface eth2 inet static
+	address 192.185.0.1
+	netmask 255.255.248.0
+```
+
+- TurkRegion
+
+```bash
+# DHCP config for eth0
+auto eth0
+iface eth0 inet dhcp
+```
+
+- Sein
+
+```bash
+auto eth0
+iface eth0 inet static
+	address 192.185.8.2
+	netmask 255.255.255.0
+	gateway 192.185.8.1
+```
+
+- GrabForest
+
+```bash
+# DHCP config for eth0
+auto eth0
+iface eth0 inet dhcp
+```
+
