@@ -262,3 +262,34 @@ auto eth0
 iface eth0 inet dhcp
 ```
 
+## Routing
+- Himmel
+
+```
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+```
+
+- Frieren
+
+```
+route add -net 192.185. netmask 255.255.255.252 gw 192.185
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+route add -net 192.185. netmask 255.255.255.128 gw 192.185.
+route add -net 192.185. netmask 255.255.255.0 gw 192.185.
+```
+
+- Aura
+
+```
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+route add -net 192.185. netmask 255.255.255.128 gw 192.185.
+route add -net 192.185. netmask 255.255.255.0 gw 192.185.
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+route add -net 192.185. netmask 255.255.255.252 gw 192.185.
+
+route add -net 192.185. netmask 255.255.248.0 gw 192.185.
+route add -net 192.185. netmask 255.255.252.0 gw 192.185.
+```
+
