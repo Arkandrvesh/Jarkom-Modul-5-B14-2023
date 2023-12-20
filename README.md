@@ -466,3 +466,8 @@ apt-get install netcat -y
 
 ## NUMBER 1
 
+### Pemasalah 1
+
+Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE.
+
+### Solusi
