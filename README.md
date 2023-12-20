@@ -293,3 +293,127 @@ route add -net 192.185. netmask 255.255.248.0 gw 192.185.
 route add -net 192.185. netmask 255.255.252.0 gw 192.185.
 ```
 
+## Konfigurasi DHCP
+
+### DHCP  Server
+
+Pada DHCP Server, kita akan menginstall isc-dhcp-server dengan perintah
+
+```bash
+apt-get update
+wait
+apt-get install isc-dhcp-server -y
+wait
+
+echo '
+INTERFACESv4="eth0"
+INTERFACESv6=""
+' > /etc/default/isc-dhcp-server
+
+cp ~/dhcpd.conf /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+Kemudian pada file dhcpd.conf, kita akan mengkonfigurasi seperti berikut
+
+```bash
+
+option domain-name "example.org";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style none;
+
+subnet 192.185. netmask 255.255.255.252 {
+}
+
+subnet 192.185. netmask 255.255.255.128 {
+    range 192.185. 192.185.;
+    option routers 192.185.;
+    option broadcast-address 192.185.;
+    option domain-name-servers 192.185.;
+    default-lease-time 180;
+    max-lease-time 5760;
+}
+
+subnet 192.185. netmask 255.255.255.0 {
+    range 192.185. 192.185.;
+    option routers 192.185.;
+    option broadcast-address 192.185.;
+    option domain-name-servers 192.185.;
+    default-lease-time 180;
+    max-lease-time 5760;
+}
+
+subnet 192.185. netmask 255.255.248.0 {
+    range 192.185. 192.185.;
+    option routers 192.185.;
+    option broadcast-address 192.185.;
+    option domain-name-servers 192.185.;
+    default-lease-time 180;
+    max-lease-time 5760;
+}
+
+subnet 192.185. netmask 255.255.252.0 {
+    range 192.185. 192.185.;
+    option routers 192.185.;
+    option broadcast-address 192.185.;
+    option domain-name-servers 192.185.;
+    default-lease-time 180;
+    max-lease-time 5760;
+}
+```
+
+- `option domain-name-servers` adalah DNS Server yang akan digunakan
+- `default-lease-time` adalah waktu lease default
+- `max-lease-time` adalah waktu lease maksimal
+- `subnet` adalah subnet yang akan digunakan
+- `range` adalah range IP yang akan digunakan
+- `option routers` adalah IP dari router yang akan digunakan
+- `option broadcast-address` adalah IP broadcast yang akan digunakan
+
+### DHCP Relay
+
+Install isc-dhcp-relay pada route **Himmel dan Heiter** dengan perintah
+
+```bash
+# Configuration DHCP Relay
+apt-get update
+wait
+apt-get install isc-dhcp-relay -y
+wait
+
+echo '
+SERVERS="192.185.14.130"
+INTERFACES="eth0 eth1 eth2"
+OPTIONS="-m replace"
+' >  /etc/default/isc-dhcp-relay
+
+echo '
+net.ipv4.ip_forward=1
+' >  /etc/sysctl.conf
+```
+
+`apt-get update`: Baris ini mengupdate daftar paket yang tersedia dari repositori paket Linux. Ini merupakan langkah yang baik untuk dilakukan sebelum menginstal paket baru, untuk memastikan daftar paket terbaru.
+
+`wait`: Ini adalah perintah untuk memberikan jeda atau menunggu sementara proses pembaruan selesai sebelum melanjutkan ke langkah selanjutnya.
+
+`apt-get install isc-dhcp-relay -y`: Baris ini menginstal paket ISC DHCP Relay dengan memberikan opsi -y untuk menyetujui secara otomatis seluruh permintaan konfirmasi instalasi.
+
+echo '...' > /etc/default/isc-dhcp-relay: Baris ini menulis teks konfigurasi ke dalam file /etc/default/isc-dhcp-relay. File ini digunakan untuk mengonfigurasi opsi-opsi default untuk layanan ISC DHCP Relay.
+
+echo '...' > /etc/sysctl.conf: Baris ini menulis konfigurasi untuk menerapkan IP forwarding ke dalam file /etc/sysctl.conf. IP forwarding diperlukan agar paket dapat diteruskan antara antarmuka yang berbeda pada router.
+
+net.ipv4.ip_forward=1: Konfigurasi IP forwarding yang dinyatakan di atas, yang akan diaktifkan setelah me-restart sistem atau menjalankan perintah sysctl -p untuk mengaktifkannya tanpa restart.
+
+Dalam konfigurasi isc-dhcp-relay, server DHCP yang dituju adalah "192.185.14.130", dan antarmuka yang digunakan adalah "eth0", "eth1", dan "eth2". Opsi -m replace digunakan untuk mengganti daftar server DHCP yang mungkin sudah ada sebelumnya.
+
+Setelah menjalankan skrip ini, disarankan untuk me-restart layanan ISC DHCP Relay dan menyelaraskan konfigurasi dengan menggunakan perintah service isc-dhcp-relay restart atau systemctl restart isc-dhcp-relay, tergantung pada versi sistem operasi yang Anda gunakan.
+
+## Konfigurasi DNS
+```
+
+```
