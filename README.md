@@ -403,17 +403,66 @@ net.ipv4.ip_forward=1
 
 `apt-get install isc-dhcp-relay -y`: Baris ini menginstal paket ISC DHCP Relay dengan memberikan opsi -y untuk menyetujui secara otomatis seluruh permintaan konfirmasi instalasi.
 
-echo '...' > /etc/default/isc-dhcp-relay: Baris ini menulis teks konfigurasi ke dalam file /etc/default/isc-dhcp-relay. File ini digunakan untuk mengonfigurasi opsi-opsi default untuk layanan ISC DHCP Relay.
+`echo '...' > /etc/default/isc-dhcp-relay`: Baris ini menulis teks konfigurasi ke dalam file /etc/default/isc-dhcp-relay. File ini digunakan untuk mengonfigurasi opsi-opsi default untuk layanan ISC DHCP Relay.
 
-echo '...' > /etc/sysctl.conf: Baris ini menulis konfigurasi untuk menerapkan IP forwarding ke dalam file /etc/sysctl.conf. IP forwarding diperlukan agar paket dapat diteruskan antara antarmuka yang berbeda pada router.
+`echo '...' > /etc/sysctl.conf`: Baris ini menulis konfigurasi untuk menerapkan IP forwarding ke dalam file /etc/sysctl.conf. IP forwarding diperlukan agar paket dapat diteruskan antara antarmuka yang berbeda pada router.
 
-net.ipv4.ip_forward=1: Konfigurasi IP forwarding yang dinyatakan di atas, yang akan diaktifkan setelah me-restart sistem atau menjalankan perintah sysctl -p untuk mengaktifkannya tanpa restart.
+`net.ipv4.ip_forward=1`: Konfigurasi IP forwarding yang dinyatakan di atas, yang akan diaktifkan setelah me-restart sistem atau menjalankan perintah sysctl -p untuk mengaktifkannya tanpa restart.
 
-Dalam konfigurasi isc-dhcp-relay, server DHCP yang dituju adalah "192.185.14.130", dan antarmuka yang digunakan adalah "eth0", "eth1", dan "eth2". Opsi -m replace digunakan untuk mengganti daftar server DHCP yang mungkin sudah ada sebelumnya.
+Dalam konfigurasi `isc-dhcp-relay`, server DHCP yang dituju adalah "192.185.14.130", dan antarmuka yang digunakan adalah "eth0", "eth1", dan "eth2". Opsi -m replace digunakan untuk mengganti daftar server DHCP yang mungkin sudah ada sebelumnya.
 
 Setelah menjalankan skrip ini, disarankan untuk me-restart layanan ISC DHCP Relay dan menyelaraskan konfigurasi dengan menggunakan perintah service isc-dhcp-relay restart atau systemctl restart isc-dhcp-relay, tergantung pada versi sistem operasi yang Anda gunakan.
 
 ## Konfigurasi DNS
 ```
+apt-get update
+wait
 
+apt-get install bind9 -y
+wait
+cp ~/named.conf.options /etc/bind/
+
+service bind9 restart
 ```
+
+- `named.conf.options` adalah konfigurasi DNS Server
+
+Berikut adalah isi dari file `named.conf.options`
+
+```bash
+options {
+        directory "/var/cache/bind";
+
+        forwarders {
+                192.168.122.1;
+        };
+
+        allow-query{any;};
+        auth-nxdomain no;
+        listen-on-v6 { any; };
+};
+```
+
+- `forwarders` adalah DNS Server yang akan digunakan untuk forward
+- `allow-query` adalah opsi untuk mengizinkan query dari semua IP
+- `auth-nxdomain no` adalah opsi untuk mengizinkan domain yang tidak ada
+
+## Konfigurasi Web Server
+
+Untuk konfigurasi web server, kita akan menginstall nginx pada node **Sein dan Stark** dengan perintah
+
+```bash
+apt-get update
+wait
+apt-get install nginx -y
+wait
+cp ~/index.nginx-debian.html /var/www/html
+service nginx start
+apt-get install netcat -y
+```
+
+- `index.nginx-debian.html` adalah file html yang akan ditampilkan pada web server nanti
+- `netcat` adalah aplikasi yang digunakan untuk mengirimkan data ke web server
+
+## NUMBER 1
+
